@@ -7,23 +7,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>vue static</title>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <link href="/output.css" rel="stylesheet">
 
 </head>
 
 <body>
-  <div id="app">
-    <input type="text" v-model="message">
-    <h3>{{message}}</h3>
+  <div id="app" class=" flex justify-center flex-col items-center">
+    <input type="text" name="item" id="item" v-model="newTodo" @keyup.enter="addTodo"
+      class="block w-[300px] h-10 rounded-md border border-blue-500 pl-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm mx-auto my-5"
+      placeholder="輸入代辦事項">
+    <div class=" w-[300px] bg-slate-200 rounded p-2">
+      <p class="text-2xl">{{message}}</p>
+    </div>
+    <ul class="list">
+      <li v-for="(todo, i) in todos" :key="todo.id"
+        class="flex justify-between items-center text-2xl my-2  w-[300px] bg-slate-200 rounded p-2 text-cyan-500">
+        <div class="flex items-center">
+          <input type="checkbox" name="" id="" class="cursor-pointer">
+          <p class="ml-2">{{todo.title}}</p>
+        </div>
+        <div @click="removeTodo(i)"
+          class="text-white bg-red-600 rounded-full w-6 h-6 cursor-pointer text-lg flex items-center justify-center">
+          <p>X</p>
+        </div>
+      </li>
+    </ul>
   </div>
 
   <script>
     const { createApp } = Vue;
     const app = createApp({
+      // options api
       data() {
         return {
           message: 'Hello Vue!',
-        }
-      }
+          todos: [
+            { "id": 1, "title": "JavaScript", "completed": false },
+            { "id": 2, "title": "React", "completed": true },
+            { "id": 3, "title": "Vue", "completed": false },
+          ],
+          newTodo: '',
+        };
+      },
+      methods: {
+        addTodo() {
+          // console.log(this.newTodo);
+          const value = this.newTodo && this.newTodo.trim();
+          if (!value) {
+            return;
+          }
+          this.todos.push({ "id": this.todos.length + 1, "title": value, "completed": false });
+          this.newTodo = '';
+        },
+        editTodo() {
+
+        },
+        removeTodo(index) {
+          // const index = this.todos.indexOf(todo);
+          // console.log(index);
+          // const todo1 = this.todos.slice(0, index);
+          // const todo2 = this.todos.slice(index + 1);
+          // this.todos = todo1.concat(todo2);
+          this.todos.splice(index, 1);
+        },
+      },
     });
     app.mount('#app');
   </script>
