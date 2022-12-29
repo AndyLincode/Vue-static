@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <div id="app" class=" flex justify-center flex-col items-center autobg h-screen">
+  <div id="app" class=" flex justify-center flex-col items-center h-screen">
     <div class=" w-[300px] rounded p-2 mt-2">
       <p class="text-2xl">{{message}}</p>
     </div>
@@ -34,7 +34,6 @@
     </ul>
     <strong>尚有 <span class="text-red-600">{{remaining}}</span> 個事項未完成</strong>
   </div>
-  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
   <script>
     function getRandomInt(max) {
       return Math.floor(Math.random() * Math.floor(max - 50) + 100);
@@ -50,9 +49,6 @@
       element.style.backgroundImage = getRBGA();
     });
 
-// $('.autobg').each(function (index, currentElement) {
-//     currentElement.style.backgroundImage = getRBGA();
-// });
   </script>
   <script>
     const { createApp } = Vue;
