@@ -13,12 +13,12 @@
 
 <body>
   <div id="app" class=" flex justify-center flex-col items-center">
+    <div class=" w-[300px] rounded p-2 mt-2">
+      <p class="text-2xl">{{message}}</p>
+    </div>
     <input type="text" name="item" id="item" v-model="newTodo" @keyup.enter="addTodo"
       class="block w-[300px] h-10 rounded-md border border-blue-500 pl-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm mx-auto my-5"
       placeholder="輸入代辦事項">
-    <div class=" w-[300px] bg-slate-200 rounded p-2">
-      <p class="text-2xl">{{message}}</p>
-    </div>
     <ul class="list">
       <li v-for="(todo, i) in todos" :key="todo.id"
         class="flex justify-between items-center text-2xl my-2  w-[300px] bg-slate-200 rounded p-2 text-cyan-500">
@@ -32,6 +32,7 @@
         </div>
       </li>
     </ul>
+    <strong>尚有 <span class="text-red-600">{{remaining}}</span> 個事項未完成</strong>
   </div>
 
   <script>
@@ -40,12 +41,8 @@
       // options api
       data() {
         return {
-          message: 'Hello Vue!',
-          todos: [
-            { "id": 1, "title": "JavaScript", "completed": false },
-            { "id": 2, "title": "React", "completed": true },
-            { "id": 3, "title": "Vue", "completed": false },
-          ],
+          message: 'TodoList with Vue (static)',
+          todos: JSON.parse(localStorage.getItem('todos') || []),
           newTodo: '',
         };
       },
@@ -71,6 +68,23 @@
           this.todos.splice(index, 1);
         },
       },
+      watch: {
+        todos: {
+          // 監看 todos 有沒有更動
+          // 有 -> 執行 handler function
+          handler(todos) {
+            localStorage.setItem('todos', JSON.stringify(todos));
+          },
+          // 看到物件或陣列的內層改變
+          deep: true
+        }
+      },
+      computed: {
+        remaining() {
+          let uncompleted = this.todos.filter((e) => !e.completed) || 0;
+          return uncompleted.length;
+        }
+      }
     });
     app.mount('#app');
   </script>
