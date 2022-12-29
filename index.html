@@ -23,8 +23,8 @@
       <li v-for="(todo, i) in todos" :key="todo.id"
         class="flex justify-between items-center text-2xl my-2  w-[300px] bg-slate-200 rounded p-2 text-cyan-500">
         <div class="flex items-center">
-          <input type="checkbox" name="" id="" class="cursor-pointer">
-          <p class="ml-2">{{todo.title}}</p>
+          <input type="checkbox" v-model="todo.completed" name="completed" id="completed" class="cursor-pointer">
+          <p class="ml-2" :class="{'line-through text-gray-500':todo.completed}">{{todo.title}}</p>
         </div>
         <div @click="removeTodo(i)"
           class="text-white bg-red-600 rounded-full w-6 h-6 cursor-pointer text-lg flex items-center justify-center">
