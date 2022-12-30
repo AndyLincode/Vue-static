@@ -33,6 +33,7 @@
       </li>
     </ul>
     <strong>尚有 <span class="text-red-600">{{remaining}}</span> 個事項未完成</strong>
+    <button class="bg-orange-500 w-44 rounded-xl text-white hover:bg-orange-700" @click="removeDone">清除已完成</button>
   </div>
   <script>
     function getRandomInt(max) {
@@ -68,11 +69,12 @@
           if (!value) {
             return;
           }
-          this.todos.push({ "id": this.todos[this.todos.length - 1].id + 1, "title": value, "completed": false });
+          this.todos.push({ "id": this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1, "title": value, "completed": false });
           this.newTodo = '';
         },
-        editTodo() {
-
+        removeDone() {
+          const doneItem = this.todos.filter(e => !e.completed);
+          this.todos = doneItem;
         },
         removeTodo(index) {
           // const index = this.todos.indexOf(todo);
