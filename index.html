@@ -22,10 +22,14 @@
     <ul class="list">
       <li v-for="(todo, i) in todos" :key="todo.id"
         class="flex justify-between items-center text-2xl my-2  w-[300px] bg-slate-200 rounded p-2 text-cyan-500">
-        <div class="flex items-center">
+        <div v-if="editedTodo !== todo" class="flex items-center">
           <input type="checkbox" v-model="todo.completed" name="completed" id="completed" class="cursor-pointer">
-          <p class="ml-2" :class="{'line-through text-gray-500':todo.completed}">{{todo.title}}</p>
+          <p class="ml-2" :class="{'line-through text-gray-500':todo.completed}" @dblclick="editTodo(todo)">
+            {{todo.title}}</p>
         </div>
+        <input type="text" class="block w-1/2 h-8 rounded-md border border-blue-500 pl-2  sm:text-sm  "
+          placeholder="修改代辦事項" v-else v-model="todo.title" @keyup.enter="doneEdit(todo)" @blur="doneEdit(todo)"
+          @keyup.esc="cancelEdit(todo)">
         <div @click="removeTodo(i)"
           class="text-white bg-red-600 rounded-full w-6 h-6 cursor-pointer text-lg flex items-center justify-center">
           <p>X</p>
@@ -60,6 +64,8 @@
           message: 'TodoList with Vue (static)',
           todos: JSON.parse(localStorage.getItem('todos') || []),
           newTodo: '',
+          editedTodo: null,
+          beforeEditedCache: '',
         };
       },
       methods: {
@@ -84,6 +90,19 @@
           // this.todos = todo1.concat(todo2);
           this.todos.splice(index, 1);
         },
+        editTodo(todo) {
+          this.editedTodo = todo;
+          this.beforeEditedCache = todo.title;
+        },
+        doneEdit(todo) {
+          todo.title = todo.title.trim();
+          this.editedTodo = null;
+        },
+        cancelEdit(todo) {
+          todo.title = this.beforeEditedCache;
+          this.editedTodo = null;
+        }
+
       },
       watch: {
         todos: {
